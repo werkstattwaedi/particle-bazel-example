@@ -1,0 +1,14 @@
+# Particle P2 firmware build
+
+package(default_visibility = ["//visibility:public"])
+
+# Simple test to verify Particle SDK headers compile
+cc_library(
+    name = "particle_test",
+    srcs = ["particle_test.cc"],
+    deps = [
+        "//lib/app_core:app_core",
+        "//third_party/particle:particle_sdk",
+    ],
+    target_compatible_with = ["@pigweed//pw_build/constraints/arm:cortex-m33"],
+)

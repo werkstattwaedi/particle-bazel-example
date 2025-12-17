@@ -1,0 +1,46 @@
+# Particle Device OS SDK for P2 (RTL8721DM / Cortex-M33)
+# Headers and stubs extracted from Device OS 6.3.3
+# License: LGPL v3
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "particle_sdk",
+    hdrs = glob(["hdrs/**/*.h"]),
+    includes = [
+        "hdrs",
+        "hdrs/hal/inc",
+        "hdrs/hal/shared",
+        "hdrs/wiring/inc",
+        "hdrs/system/inc",
+        "hdrs/services/inc",
+        "hdrs/dynalib/inc",
+        "hdrs/platform/MCU/rtl872x/inc",
+    ],
+    defines = [
+        "PLATFORM_ID=32",
+        "HAL_PLATFORM_RTL872X=1",
+        "PARTICLE_USER_MODULE=1",
+    ],
+    target_compatible_with = ["@pigweed//pw_build/constraints/arm:cortex-m33"],
+)
+
+# TODO: dynalib_stubs require additional platform headers from hal/src/msom/
+# These will be needed for linking but are skipped for now.
+# cc_library(
+#     name = "dynalib_stubs",
+#     srcs = glob(["stubs/*.c", "stubs/*.cpp"]),
+#     textual_hdrs = glob(["stubs/*.inc", "stubs/user_part_export.c"]),
+#     copts = ["-iquote", "third_party/particle/stubs"],
+#     deps = [":particle_sdk"],
+#     alwayslink = True,
+#     target_compatible_with = ["@pigweed//pw_build/constraints/arm:cortex-m33"],
+# )
+
+# Export linker scripts for firmware linking
+exports_files(glob(["linker/*.ld"]))
+
+filegroup(
+    name = "linker_scripts",
+    srcs = glob(["linker/*.ld"]),
+)
