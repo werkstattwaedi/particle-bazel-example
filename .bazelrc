@@ -31,8 +31,14 @@ build:p2 --platforms=//platforms:particle_p2
 # Enable C++20 for coroutines support
 build:p2 --@pigweed//pw_toolchain/cc:cxx_standard=20
 
-# Host build for tests
-build:host --platforms=@pigweed//pw_build/platforms:host_platform
+# Pigweed backends for embedded target
+build:p2 --@pigweed//pw_assert:check_backend=@pigweed//pw_assert_basic
+build:p2 --@pigweed//pw_assert:assert_backend=@pigweed//pw_assert_basic
+build:p2 --@pigweed//pw_log:backend=@pigweed//pw_log_basic
+build:p2 --@pigweed//pw_sys_io:backend=@pigweed//pw_sys_io_baremetal_stm32f429
+
+# Host build for tests (uses default host platform)
+# No --platforms needed for host builds
 
 # ============================================
 # Output settings

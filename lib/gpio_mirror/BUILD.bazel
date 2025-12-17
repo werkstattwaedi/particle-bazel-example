@@ -1,0 +1,11 @@
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "gpio_mirror",
+    srcs = ["gpio_mirror.cc"],
+    hdrs = ["gpio_mirror.h"],
+    deps = [
+        "@pigweed//pw_digital_io",
+        "@pigweed//pw_status",
+    ],
+)

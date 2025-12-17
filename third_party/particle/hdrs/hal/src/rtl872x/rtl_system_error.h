@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Particle Industries, Inc.  All rights reserved.
+ * Copyright (c) 2018 Particle Industries, Inc.  All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,24 +15,23 @@
  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#ifndef RTL_SYSTEM_ERROR
+#define RTL_SYSTEM_ERROR
 
-/* Modified for Bazel build: Stub declarations instead of Realtek SDK include */
-/* Original: #include "swlib/string/memproc.h" */
-
-#include <stddef.h>
+#include <stdint.h>
+#include "gap.h"
+#include "system_error.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ROM memory functions - declared but not defined (provided by system firmware) */
-void *_memset(void *s, int c, size_t n);
-void *_memcpy(void *s1, const void *s2, size_t n);
-int _memcmp(const void *av, const void *bv, size_t len);
-void *_memchr(const void *src_void, int c, size_t length);
-void *_memmove(void *dst_void, const void *src_void, size_t length);
+system_error_t rtl_ble_error_to_system(T_GAP_CAUSE error);
+system_error_t rtl_error_to_system(int error);
 
 #ifdef __cplusplus
 }
 #endif
+
+#endif
+

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Particle Industries, Inc.  All rights reserved.
+ * Copyright (c) 2018 Particle Industries, Inc.  All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,22 +17,8 @@
 
 #pragma once
 
-/* Modified for Bazel build: Stub declarations instead of Realtek SDK include */
-/* Original: #include "swlib/string/memproc.h" */
+#define EEPROM_FILE_SIZE            (4 * 1024)
+#define FLASH_ERASED_VALUE          0xFF
 
-#include <stddef.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* ROM memory functions - declared but not defined (provided by system firmware) */
-void *_memset(void *s, int c, size_t n);
-void *_memcpy(void *s1, const void *s2, size_t n);
-int _memcmp(const void *av, const void *bv, size_t len);
-void *_memchr(const void *src_void, int c, size_t length);
-void *_memmove(void *dst_void, const void *src_void, size_t length);
-
-#ifdef __cplusplus
-}
-#endif
+#define EEPROM_DIR_PATH             "/sys"
+#define EEPROM_FILE_PATH            "/sys/eeprom.bin"

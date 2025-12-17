@@ -1,0 +1,10 @@
+load("@pigweed//pw_unit_test:pw_cc_test.bzl", "pw_cc_test")
+
+pw_cc_test(
+    name = "gpio_mirror_test",
+    srcs = ["gpio_mirror_test.cc"],
+    deps = [
+        "//lib/gpio_mirror",
+        "@pigweed//pw_digital_io:digital_io_mock",
+    ],
+)

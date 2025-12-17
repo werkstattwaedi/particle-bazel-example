@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Particle Industries, Inc.  All rights reserved.
+ * Copyright (c) 2020 Particle Industries, Inc.  All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,22 +17,15 @@
 
 #pragma once
 
-/* Modified for Bazel build: Stub declarations instead of Realtek SDK include */
-/* Original: #include "swlib/string/memproc.h" */
+#include "stream.h"
+#include <FreeRTOS.h>
+#include <event_groups.h>
 
-#include <stddef.h>
+namespace particle {
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+class EventGroupBasedStream: public Stream {
+public:
+    virtual EventGroupHandle_t eventGroup() = 0;
+};
 
-/* ROM memory functions - declared but not defined (provided by system firmware) */
-void *_memset(void *s, int c, size_t n);
-void *_memcpy(void *s1, const void *s2, size_t n);
-int _memcmp(const void *av, const void *bv, size_t len);
-void *_memchr(const void *src_void, int c, size_t length);
-void *_memmove(void *dst_void, const void *src_void, size_t length);
-
-#ifdef __cplusplus
-}
-#endif
+} // particle

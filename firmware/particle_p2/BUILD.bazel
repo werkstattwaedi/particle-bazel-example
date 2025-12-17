@@ -12,3 +12,15 @@ cc_library(
     ],
     target_compatible_with = ["@pigweed//pw_build/constraints/arm:cortex-m33"],
 )
+
+# GPIO mirror firmware
+cc_library(
+    name = "gpio_mirror_firmware",
+    srcs = ["main.cc"],
+    deps = [
+        "//lib/gpio_mirror",
+        "//lib/particle_gpio",
+        "//third_party/particle:particle_sdk",
+    ],
+    target_compatible_with = ["@pigweed//pw_build/constraints/arm:cortex-m33"],
+)

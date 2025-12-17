@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Particle Industries, Inc.  All rights reserved.
+ * Copyright (c) 2018 Particle Industries, Inc.  All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,22 +17,19 @@
 
 #pragma once
 
-/* Modified for Bazel build: Stub declarations instead of Realtek SDK include */
-/* Original: #include "swlib/string/memproc.h" */
+#include "hal_platform.h"
 
-#include <stddef.h>
+#define MINIZ_LITTLE_ENDIAN 1
+#define MINIZ_USE_UNALIGNED_LOADS_AND_STORES 1
+#define MINIZ_HAS_64BIT_REGISTERS 0
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#define MINIZ_NO_STDIO
+#define MINIZ_NO_ARCHIVE_APIS
+#define MINIZ_NO_TIME
+#define MINIZ_NO_ZLIB_APIS
+#define MINIZ_NO_MALLOC
 
-/* ROM memory functions - declared but not defined (provided by system firmware) */
-void *_memset(void *s, int c, size_t n);
-void *_memcpy(void *s1, const void *s2, size_t n);
-int _memcmp(const void *av, const void *bv, size_t len);
-void *_memchr(const void *src_void, int c, size_t length);
-void *_memmove(void *dst_void, const void *src_void, size_t length);
+#if HAL_PLATFORM_INFLATE_USE_FILESYSTEM
+#define MINIZ_TINFL_OUTPUT_BUFFER_NOT_IN_RAM 1
+#endif // HAL_PLATFORM_INFLATE_USE_FILESYSTEM
 
-#ifdef __cplusplus
-}
-#endif

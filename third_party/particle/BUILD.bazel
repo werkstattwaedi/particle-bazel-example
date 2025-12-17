@@ -11,6 +11,8 @@ cc_library(
         "hdrs",
         "hdrs/hal/inc",
         "hdrs/hal/shared",
+        "hdrs/hal/src/tron",
+        "hdrs/hal/src/rtl872x",
         "hdrs/wiring/inc",
         "hdrs/system/inc",
         "hdrs/services/inc",
@@ -25,17 +27,36 @@ cc_library(
     target_compatible_with = ["@pigweed//pw_build/constraints/arm:cortex-m33"],
 )
 
-# TODO: dynalib_stubs require additional platform headers from hal/src/msom/
-# These will be needed for linking but are skipped for now.
-# cc_library(
-#     name = "dynalib_stubs",
-#     srcs = glob(["stubs/*.c", "stubs/*.cpp"]),
-#     textual_hdrs = glob(["stubs/*.inc", "stubs/user_part_export.c"]),
-#     copts = ["-iquote", "third_party/particle/stubs"],
-#     deps = [":particle_sdk"],
-#     alwayslink = True,
-#     target_compatible_with = ["@pigweed//pw_build/constraints/arm:cortex-m33"],
-# )
+cc_library(
+    name = "dynalib_stubs",
+    srcs = glob(["stubs/*.c", "stubs/*.cpp"]),
+    textual_hdrs = glob(["stubs/*.inc", "stubs/user_part_export.c"]),
+    copts = [
+        "-iquote", "third_party/particle/stubs",
+        "-isystem", "third_party/particle/stubs",  # For swlib/string/memproc.h stub
+        # Relax warnings for vendored Device OS code
+        "-Wno-redundant-decls",
+        "-Wno-switch",
+        "-Wno-unused-parameter",
+        "-Wno-cast-qual",
+        "-Wno-missing-field-initializers",
+    ],
+    conlyopts = [
+        "-Wno-strict-prototypes",  # Only valid for C
+    ],
+    defines = [
+        "INTERRUPTS_HAL_EXCLUDE_PLATFORM_HEADERS=1",  # Use simple IRQn_Type typedef
+        # User module defines
+        "MODULE_VERSION=1",
+        "MODULE_FUNCTION=5",  # MOD_FUNC_USER_PART
+        "MODULE_INDEX=1",
+        "MODULE_DEPENDENCY=4,1,6303",  # Depends on system-part1 v6.3.3 (6303)
+        "MODULE_DEPENDENCY2=0,0,0",    # No second dependency
+    ],
+    deps = [":particle_sdk"],
+    alwayslink = True,
+    target_compatible_with = ["@pigweed//pw_build/constraints/arm:cortex-m33"],
+)
 
 # Export linker scripts for firmware linking
 exports_files(glob(["linker/*.ld"]))

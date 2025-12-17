@@ -15,24 +15,31 @@
  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#ifndef RGBLED_HAL_IMPL_H_
+#define RGBLED_HAL_IMPL_H_
 
-/* Modified for Bazel build: Stub declarations instead of Realtek SDK include */
-/* Original: #include "swlib/string/memproc.h" */
+#include <stdint.h>
 
-#include <stddef.h>
-
-#ifdef __cplusplus
+#ifdef  __cplusplus
 extern "C" {
 #endif
 
-/* ROM memory functions - declared but not defined (provided by system firmware) */
-void *_memset(void *s, int c, size_t n);
-void *_memcpy(void *s1, const void *s2, size_t n);
-int _memcmp(const void *av, const void *bv, size_t len);
-void *_memchr(const void *src_void, int c, size_t length);
-void *_memmove(void *dst_void, const void *src_void, size_t length);
+#define LED_CONFIG_STRUCT_VERSION           0x01
 
-#ifdef __cplusplus
+typedef struct hal_led_config_t {
+    uint8_t         version;            // Struct version
+    uint16_t        pin;
+    union {
+        struct {
+            uint8_t is_active   : 1;    // Is LED active?
+            uint8_t is_inverted : 1;    // If LED is "inverted", active state is 0, instead of 1
+        };
+    };
+    uint8_t         padding[18];
+} hal_led_config_t;
+
+#ifdef  __cplusplus
 }
 #endif
+
+#endif  /* RGBLED_HAL_IMPL_H_ */

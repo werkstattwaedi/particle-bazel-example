@@ -1,0 +1,14 @@
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "particle_gpio",
+    srcs = ["particle_digital_io.cc"],
+    hdrs = ["particle_digital_io.h"],
+    deps = [
+        "//third_party/particle:particle_sdk",
+        "@pigweed//pw_digital_io",
+        "@pigweed//pw_result",
+        "@pigweed//pw_status",
+    ],
+    target_compatible_with = ["@pigweed//pw_build/constraints/arm:cortex-m33"],
+)
