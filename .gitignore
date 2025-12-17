@@ -1,6 +1,7 @@
 # Bazel
 bazel-*
 .bazelrc.user
+external
 
 # IDE
 .idea/
