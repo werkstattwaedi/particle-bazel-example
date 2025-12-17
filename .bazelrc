@@ -1,0 +1,41 @@
+# Particle P2 Firmware - Bazel Configuration
+# ==========================================
+
+# Required Pigweed flags (from setup guide)
+common --incompatible_default_to_explicit_init_py
+common --repo_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+common --experimental_exclude_defines_from_exec_config
+common --experimental_exclude_starlark_flags_from_exec_config
+build --incompatible_strict_action_env
+common --legacy_external_runfiles=True
+common --incompatible_bazel_test_exec_run_under=True
+common --experimental_platform_in_output_dir=True
+
+# UX improvements
+common --verbose_failures
+build --ui_event_filters=-debug
+test --test_output=errors
+
+# C++ improvements
+common --strip=never
+common --per_file_copt=external/.*,.*\.pb\.cc@-w
+common --host_per_file_copt=external/.*,.*\.pb\.cc@-w
+
+# ============================================
+# Platform configurations
+# ============================================
+
+# Particle P2 firmware build (Cortex-M33)
+build:p2 --platforms=//platforms:particle_p2
+
+# Enable C++20 for coroutines support
+build:p2 --@pigweed//pw_toolchain/cc:cxx_standard=20
+
+# Host build for tests
+build:host --platforms=@pigweed//pw_build/platforms:host_platform
+
+# ============================================
+# Output settings
+# ============================================
+build --show_timestamps
+build --color=yes

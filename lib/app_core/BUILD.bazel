@@ -1,0 +1,14 @@
+# Core application logic - platform-agnostic code
+# Can be built and tested on host, and cross-compiled for P2
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "app_core",
+    srcs = ["app_core.cc"],
+    hdrs = ["app_core.h"],
+    deps = [
+        "@pigweed//pw_status",
+        "@pigweed//pw_result",
+    ],
+)

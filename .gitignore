@@ -1,0 +1,18 @@
+# Bazel
+bazel-*
+.bazelrc.user
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Compile commands
+.compile_commands/
+compile_commands.json
+
+# OS
+.DS_Store
+Thumbs.db

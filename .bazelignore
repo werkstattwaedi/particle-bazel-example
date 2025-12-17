@@ -1,0 +1,2 @@
+# Ignore submodules to prevent Bazel from treating them as source code
+third_party/pigweed
