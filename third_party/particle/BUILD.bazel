@@ -12,7 +12,7 @@ package(default_visibility = ["//visibility:public"])
 PLATFORM_ID = 32
 PLATFORM_NAME = "p2"
 PLATFORM_GEN = 3
-DEVICE_OS_VERSION = 6304  # 6.3.4
+DEVICE_OS_VERSION = 6303  # 6.3.3
 
 # Common defines for all Device OS modules
 DEVICE_OS_DEFINES = [

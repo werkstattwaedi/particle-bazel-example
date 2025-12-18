@@ -1,6 +1,7 @@
 """Bazel rules for building Particle P2 firmware."""
 
 load("@rules_cc//cc:defs.bzl", "cc_binary")
+load("@pigweed//pw_build:binary_tools.bzl", "pw_elf_to_bin")
 
 # Platform: P2 (RTL8721DM / Cortex-M33)
 PARTICLE_P2_PLATFORM_ID = 32
@@ -94,22 +95,25 @@ def particle_firmware_binary(
         elf: Label of the ELF file to convert.
         **kwargs: Additional arguments passed to genrule.
     """
+    # Use Pigweed's pw_elf_to_bin for proper toolchain integration
+    bin_name = name + "_raw"
+    pw_elf_to_bin(
+        name = bin_name,
+        elf_input = elf,
+        bin_out = bin_name + ".bin",
+    )
+
+    # Patch SHA256 and CRC32 into the binary
     native.genrule(
         name = name,
-        srcs = [elf],
-        outs = [name + ".bin"] if not name.endswith(".bin") else [name],
+        srcs = [":" + bin_name + ".bin"],
+        outs = [name + ".bin"],
         cmd = """
-            # Get objcopy from toolchain
-            OBJCOPY=$$(dirname $(CC))/arm-none-eabi-objcopy
-
-            # Convert ELF to binary
-            $$OBJCOPY -O binary $< $@
-
-            # Patch SHA256 and CRC32
+            cp $< $@
+            chmod +w $@
             python3 $(location //tools:particle_crc) $@
         """,
         tools = ["//tools:particle_crc"],
-        toolchains = ["@bazel_tools//tools/cpp:current_cc_toolchain"],
         target_compatible_with = ["@pigweed//pw_build/constraints/arm:cortex-m33"],
         **kwargs
     )
