@@ -28,8 +28,8 @@ common --host_per_file_copt=external/.*,.*\.pb\.cc@-w
 # Particle P2 firmware build (Cortex-M33)
 build:p2 --platforms=//platforms:particle_p2
 
-# Enable C++20 for coroutines support
-build:p2 --@pigweed//pw_toolchain/cc:cxx_standard=20
+# Use C++17 to match Particle Device OS requirements
+build:p2 --@pigweed//pw_toolchain/cc:cxx_standard=17
 
 # Pigweed backends for embedded target
 build:p2 --@pigweed//pw_assert:check_backend=@pigweed//pw_assert_basic

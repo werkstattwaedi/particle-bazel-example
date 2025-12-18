@@ -1,0 +1,15 @@
+If:
+  PathExclude:
+    - third_party/particle/stubs/gpio_hal_stubs.c
+    - third_party/particle/stubs/module_info.c
+    - third_party/particle/stubs/newlib_stubs.cpp
+    - third_party/particle/stubs/pw_assert_stub.c
+    - third_party/particle/stubs/user_export.c
+    - third_party/particle/stubs/user_module.c
+    - third_party/pigweed/pw_digital_io/digital_io.cc
+    - firmware/particle_p2/main.cc
+    - lib/gpio_mirror/gpio_mirror.cc
+    - third_party/pigweed/pw_status/status.cc
+    - lib/particle_gpio/particle_digital_io.cc
+Diagnostics:
+  Suppress: '*'

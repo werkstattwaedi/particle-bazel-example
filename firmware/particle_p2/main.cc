@@ -23,6 +23,11 @@ app::GpioMirror mirror(input, output);
 // Particle user module entry points
 extern "C" {
 
+// Called before C++ constructors run
+void module_user_init_hook() {
+  // Nothing to do here
+}
+
 void setup() {
   // Ignore errors for simplicity - in production you'd want proper error handling
   (void)input.Enable();
@@ -31,6 +36,11 @@ void setup() {
 
 void loop() {
   (void)mirror.Update();
+}
+
+// Called after each loop iteration
+void _post_loop() {
+  // Nothing to do here
 }
 
 }  // extern "C"

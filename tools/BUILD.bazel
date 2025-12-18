@@ -1,0 +1,12 @@
+# Tools for Particle firmware processing
+
+package(default_visibility = ["//visibility:public"])
+
+# Python script for patching SHA256/CRC32 into firmware binaries
+py_binary(
+    name = "particle_crc",
+    srcs = ["particle_crc.py"],
+)
+
+# Export the script for use in genrules
+exports_files(["particle_crc.py"])

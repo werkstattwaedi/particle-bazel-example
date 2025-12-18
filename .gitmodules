@@ -1,3 +1,6 @@
 [submodule "third_party/pigweed"]
 	path = third_party/pigweed
 	url = https://pigweed.googlesource.com/pigweed/pigweed.git
+[submodule "third_party/particle/device-os"]
+	path = third_party/particle/device-os
+	url = https://github.com/particle-iot/device-os.git
