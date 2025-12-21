@@ -7,12 +7,11 @@ load("//third_party/particle/rules:particle_firmware.bzl",
 
 package(default_visibility = ["//visibility:public"])
 
-# GPIO mirror firmware library
+# LED blink firmware library
 cc_library(
     name = "gpio_mirror_firmware_lib",
     srcs = ["main.cc"],
     deps = [
-        "//lib/gpio_mirror",
         "//lib/particle_gpio",
         "//third_party/particle:device_os_headers",
         "//third_party/particle:pw_assert_stub",  # pw_assert implementation stub
