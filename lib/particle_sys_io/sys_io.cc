@@ -1,23 +1,24 @@
 // Copyright 2024 Werkstatt Waedi
 // SPDX-License-Identifier: Apache-2.0
 //
-// pw_sys_io backend for Particle Device OS using Serial1 (UART)
+// pw_sys_io backend for Particle Device OS using USB CDC Serial
+// This enables logging via `particle serial monitor`
 
 #include "pw_sys_io/sys_io.h"
 
-#include "usart_hal.h"
+#include "usb_hal.h"
 
 namespace {
 
-constexpr hal_usart_interface_t kSerial = HAL_USART_SERIAL1;
+constexpr HAL_USB_USART_Serial kSerial = HAL_USB_USART_SERIAL;
 constexpr uint32_t kBaudRate = 115200;
 
 bool g_initialized = false;
 
 void EnsureInitialized() {
   if (!g_initialized) {
-    hal_usart_init(kSerial, nullptr, nullptr);
-    hal_usart_begin(kSerial, kBaudRate);
+    HAL_USB_USART_Init(kSerial, nullptr);
+    HAL_USB_USART_Begin(kSerial, kBaudRate, nullptr);
     g_initialized = true;
   }
 }
@@ -30,11 +31,11 @@ Status ReadByte(std::byte* dest) {
   EnsureInitialized();
 
   // Block until data available
-  while (hal_usart_available(kSerial) <= 0) {
+  while (HAL_USB_USART_Available_Data(kSerial) <= 0) {
     // Busy wait
   }
 
-  int32_t data = hal_usart_read(kSerial);
+  int32_t data = HAL_USB_USART_Receive_Data(kSerial, 0);
   if (data < 0) {
     return Status::ResourceExhausted();
   }
@@ -46,11 +47,11 @@ Status ReadByte(std::byte* dest) {
 Status TryReadByte(std::byte* dest) {
   EnsureInitialized();
 
-  if (hal_usart_available(kSerial) <= 0) {
+  if (HAL_USB_USART_Available_Data(kSerial) <= 0) {
     return Status::Unavailable();
   }
 
-  int32_t data = hal_usart_read(kSerial);
+  int32_t data = HAL_USB_USART_Receive_Data(kSerial, 0);
   if (data < 0) {
     return Status::ResourceExhausted();
   }
@@ -62,12 +63,8 @@ Status TryReadByte(std::byte* dest) {
 Status WriteByte(std::byte b) {
   EnsureInitialized();
 
-  // Block until space available
-  while (hal_usart_available_data_for_write(kSerial) <= 0) {
-    // Busy wait
-  }
-
-  hal_usart_write(kSerial, static_cast<uint8_t>(b));
+  // Send via USB CDC - HAL handles buffering
+  HAL_USB_USART_Send_Data(kSerial, static_cast<uint8_t>(b));
   return OkStatus();
 }
 

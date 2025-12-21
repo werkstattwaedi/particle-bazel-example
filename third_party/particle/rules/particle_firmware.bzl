@@ -43,6 +43,7 @@ PARTICLE_BASE_LINKOPTS = [
     "--specs=nosys.specs",
     # Linker scripts and library paths
     "-Tthird_party/particle/device-os/modules/tron/user-part/linker.ld",
+    "-Lthird_party/particle/rules",  # For memory_platform_user.ld defaults
     "-Lthird_party/particle/device-os/modules/tron/user-part",
     "-Lthird_party/particle/device-os/modules/tron/system-part1",
     "-Lthird_party/particle/device-os/modules/shared/rtl872x",
@@ -111,19 +112,22 @@ def _particle_two_pass_binary_impl(ctx):
     linker_script_files = []
     for f in ctx.files._linker_scripts:
         linker_script_files.append(f)
-    linker_script_files.append(ctx.file._defaults_ld)
 
     # Output files
     intermediate_elf = ctx.actions.declare_file(ctx.attr.name + "_intermediate.elf")
     sizes_json = ctx.actions.declare_file(ctx.attr.name + "_sizes.json")
-    precise_ld = ctx.actions.declare_file(ctx.attr.name + "_memory.ld")
+    # Name must match what linker.ld includes: "memory_platform_user.ld"
+    # Put in subdirectory so we can add it first in -L search path
+    precise_ld = ctx.actions.declare_file(ctx.attr.name + "_generated/memory_platform_user.ld")
     final_elf = ctx.actions.declare_file(ctx.attr.name)
 
-    # Build linker flags for first pass (with defaults)
-    base_linkopts = PARTICLE_BASE_LINKOPTS + [
-        "-L" + ctx.file._defaults_ld.dirname,
-    ]
+    # Build linker flags for first pass (with defaults from memory_platform_user.ld)
+    base_linkopts = PARTICLE_BASE_LINKOPTS
     user_linkopts = ctx.attr.linkopts
+
+    # Pass 2 flags: put generated memory_platform_user.ld directory FIRST
+    # so it overrides the defaults when linker.ld does INCLUDE memory_platform_user.ld
+    pass2_linkopts = ["-L" + precise_ld.dirname] + PARTICLE_BASE_LINKOPTS
 
     # Create the two-pass linking script
     # We use run_shell because we need to execute two linking steps with
@@ -153,10 +157,7 @@ echo "Two-pass linking complete."
         extract_script = ctx.file._extract_sizes.path,
         objdump = objdump_path,
         linker_flags = " ".join(base_linkopts + user_linkopts),
-        linker_flags_pass2 = " ".join(base_linkopts + user_linkopts + [
-            "-L" + precise_ld.dirname,
-            "-Wl,-T," + precise_ld.path,
-        ]),
+        linker_flags_pass2 = " ".join(pass2_linkopts + user_linkopts),
         objects = " ".join([o.path for o in objects]),
         libraries = " ".join(["-l:" + l.basename + " -L" + l.dirname for l in linker_inputs]),
         intermediate_elf = intermediate_elf.path,
@@ -191,10 +192,6 @@ _particle_two_pass_binary = rule(
         "linkopts": attr.string_list(default = []),
         "_linker_scripts": attr.label(
             default = "//third_party/particle:linker_scripts",
-        ),
-        "_defaults_ld": attr.label(
-            default = "//third_party/particle/rules:memory_platform_user_defaults.ld",
-            allow_single_file = True,
         ),
         "_extract_sizes": attr.label(
             default = "//tools:extract_elf_sizes.py",

@@ -73,6 +73,12 @@ def align_4k(value: int) -> int:
     return ((value + 4095) // 4096) * 4096
 
 
+def align_8(value: int) -> int:
+    """Align value up to 8-byte boundary with minimum padding."""
+    # Add 8 bytes padding for linker alignment slack, then align to 8
+    return ((value + 15) // 8) * 8
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Extract section sizes from ELF for two-pass linking"
@@ -112,8 +118,9 @@ def main():
         print(f"  link_module_info_crc_end = {hex(module_end)}", file=sys.stderr)
 
     # Calculate sizes (matching build_linker_script.mk formulas)
-    sram_size = data_size + bss_size
-    psram_size = psram_text + data_alt + bss_alt + dynalib
+    # Add alignment padding to account for linker section placement
+    sram_size = align_8(data_size + bss_size)
+    psram_size = align_8(psram_text + data_alt + bss_alt + dynalib)
 
     # Flash size: (module_end - module_start + 16), aligned to 4KB
     # The +16 accounts for module metadata overhead
