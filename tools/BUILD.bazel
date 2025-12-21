@@ -8,5 +8,14 @@ py_binary(
     srcs = ["particle_crc.py"],
 )
 
-# Export the script for use in genrules
-exports_files(["particle_crc.py"])
+# Python script for extracting ELF section sizes (two-pass linking)
+py_binary(
+    name = "extract_elf_sizes",
+    srcs = ["extract_elf_sizes.py"],
+)
+
+# Export the scripts for use in genrules
+exports_files([
+    "particle_crc.py",
+    "extract_elf_sizes.py",
+])

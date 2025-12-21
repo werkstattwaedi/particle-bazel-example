@@ -6,4 +6,5 @@ exports_files([
     "particle_firmware.bzl",
     "flash.sh",
     "memory_platform_user.ld",
+    "memory_platform_user_defaults.ld",
 ])
