@@ -35,7 +35,19 @@ build:p2 --@pigweed//pw_toolchain/cc:cxx_standard=17
 build:p2 --@pigweed//pw_assert:check_backend=@pigweed//pw_assert_basic
 build:p2 --@pigweed//pw_assert:assert_backend=@pigweed//pw_assert_basic
 build:p2 --@pigweed//pw_log:backend=@pigweed//pw_log_basic
-build:p2 --@pigweed//pw_sys_io:backend=@pigweed//pw_sys_io_baremetal_stm32f429
+build:p2 --@pigweed//pw_sys_io:backend=//lib/particle_sys_io:sys_io
+
+# Chrono backend using Particle HAL timer
+build:p2 --@pigweed//pw_chrono:system_clock_backend=//lib/particle_chrono:system_clock
+
+# Sync backend using Particle HAL concurrent functions
+build:p2 --@pigweed//pw_sync:mutex_backend=//lib/particle_sync:mutex
+
+# Thread backends using Particle HAL concurrent functions
+build:p2 --@pigweed//pw_thread:id_backend=//lib/particle_thread:id
+build:p2 --@pigweed//pw_thread:yield_backend=//lib/particle_thread:yield
+build:p2 --@pigweed//pw_thread:sleep_backend=//lib/particle_thread:sleep
+build:p2 --@pigweed//pw_thread:thread_backend=@pigweed//pw_thread:generic_thread_creation_unsupported
 
 # Host build for tests (uses default host platform)
 # No --platforms needed for host builds

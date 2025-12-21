@@ -57,9 +57,9 @@ def patch_firmware(bin_path: str) -> None:
         # Calculate CRC32 of everything except last 4 bytes
         crc = crc32(data[:size - CRC_LEN])
 
-        # Patch CRC at offset -4
+        # Patch CRC at offset -4 (big-endian, as Particle expects)
         f.seek(size - CRC_LEN)
-        f.write(struct.pack('<I', crc))
+        f.write(struct.pack('>I', crc))
 
         print(f"Patched {bin_path}:")
         print(f"  SHA256: {sha256_hash.hex()}")
