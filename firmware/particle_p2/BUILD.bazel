@@ -13,7 +13,7 @@ cc_library(
     srcs = ["main.cc"],
     deps = [
         "//lib/gpio_mirror",
-        "@particle_bazel//backends/gpio:particle_gpio",
+        "@particle_bazel//backends/gpio:digital_io",
         "@particle_bazel//backends/log:log_bridge",
         "@particle_bazel//particle:device_os_headers",
         "@particle_bazel//particle:pw_assert_stub",

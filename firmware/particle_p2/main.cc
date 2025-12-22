@@ -12,8 +12,8 @@
 #include <chrono>
 
 #include "lib/gpio_mirror/gpio_mirror.h"
-#include "particle_digital_io.h"
-#include "log_bridge.h"
+#include "pb_digital_io/digital_io.h"
+#include "pb_log/log_bridge.h"
 #include "pinmap_hal.h"
 #include "pw_chrono/system_clock.h"
 #include "pw_log/log.h"
@@ -26,10 +26,10 @@ constexpr hal_pin_t kMirrorInputPin = D0;
 constexpr hal_pin_t kMirrorOutputPin = D1;
 
 // GPIO objects using pw_digital_io abstraction
-particle::ParticleDigitalOut led(kLedPin);
-particle::ParticleDigitalIn mirror_input(kMirrorInputPin,
-    particle::ParticleDigitalIn::Mode::kInputPulldown);
-particle::ParticleDigitalOut mirror_output(kMirrorOutputPin);
+pb::ParticleDigitalOut led(kLedPin);
+pb::ParticleDigitalIn mirror_input(kMirrorInputPin,
+    pb::ParticleDigitalIn::Mode::kInputPulldown);
+pb::ParticleDigitalOut mirror_output(kMirrorOutputPin);
 
 // GPIO mirror logic
 app::GpioMirror mirror(mirror_input, mirror_output);
@@ -47,7 +47,7 @@ extern "C" {
 // Called before C++ constructors run
 void module_user_init_hook() {
   // Initialize log bridge to capture Device OS system logs
-  particle_log::InitLogBridge();
+  pb::log::InitLogBridge();
 }
 
 void setup() {
