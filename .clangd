@@ -1,61 +1,29 @@
 If:
   PathExclude:
     - third_party/pigweed/pw_string/type_to_string.cc
-    - third_party/particle/pw_assert_stub.cc
+    - particle/backends/assert/assert_backend.cc
     - third_party/pigweed/pw_chrono/system_clock.cc
-    - third_party/particle/device-os/modules/tron/user-part/src/module_info.c
-    - third_party/particle/device-os/modules/tron/user-part/src/user_export.c
-    - third_party/particle/device-os/modules/tron/user-part/src/user_module.c
-    - third_party/particle/device-os/modules/tron/user-part/src/newlib_stubs.cpp
+    - particle/third_party/device-os/modules/tron/user-part/src/module_info.c
+    - particle/third_party/device-os/modules/tron/user-part/src/user_export.c
+    - particle/third_party/device-os/modules/tron/user-part/src/user_module.c
+    - particle/third_party/device-os/modules/tron/user-part/src/newlib_stubs.cpp
     - third_party/pigweed/pw_digital_io/digital_io.cc
-    - lib/particle_gpio/particle_digital_io.cc
-    - lib/particle_thread/sleep.cc
+    - particle/backends/gpio/digital_io.cc
+    - particle/backends/thread/sleep.cc
     - third_party/pigweed/pw_thread/sleep.cc
     - third_party/pigweed/pw_log_basic/log_basic.cc
     - third_party/pigweed/pw_string/string_builder.cc
-    - third_party/particle/device-os/rt-dynalib/src/rt_dynalib.c
-    - >-
-      third_party/particle/device-os/communication-dynalib/src/communication_dynalib.c
-    - third_party/particle/device-os/services-dynalib/src/services_dynalib.c
+    - particle/third_party/device-os/rt-dynalib/src/rt_dynalib.c
+    - particle/third_party/device-os/communication-dynalib/src/communication_dynalib.c
+    - particle/third_party/device-os/services-dynalib/src/services_dynalib.c
     - third_party/pigweed/pw_sync/mutex.cc
-    - third_party/particle/device-os/hal-dynalib/src/hal_backup_ram.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_ble.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_bootloader.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_can.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_cellular.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_concurrent.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_core.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_dct.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_dynalib.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_gpio.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_i2c.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_ifapi.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_inet.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_mesh_deprecated.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_netdb.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_nfc.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_peripherals.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_resolvapi.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_rgbled.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_socket.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_spi.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_storage.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_syscall_posix.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_usart.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_usb.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_watchdog.c
-    - third_party/particle/device-os/hal-dynalib/src/hal_wlan.c
-    - third_party/particle/device-os/system-dynalib/src/system_dynalib.c
-    - >-
-      third_party/particle/device-os/system-dynalib/src/system_dynalib_asset_manager.c
-    - third_party/particle/device-os/system-dynalib/src/system_dynalib_cloud.c
-    - third_party/particle/device-os/system-dynalib/src/system_dynalib_ledger.c
-    - third_party/particle/device-os/system-dynalib/src/system_dynalib_net.c
+    - particle/third_party/device-os/hal-dynalib/src/*.c
+    - particle/third_party/device-os/system-dynalib/src/*.c
     - lib/gpio_mirror/gpio_mirror.cc
     - third_party/pigweed/pw_bytes/byte_builder.cc
     - firmware/particle_p2/main.cc
-    - lib/particle_sys_io/sys_io.cc
-    - lib/particle_chrono/system_clock.cc
+    - particle/backends/sys_io/sys_io.cc
+    - particle/backends/chrono/system_clock.cc
     - third_party/pigweed/pw_string/format.cc
     - third_party/pigweed/pw_status/status.cc
 Diagnostics:
