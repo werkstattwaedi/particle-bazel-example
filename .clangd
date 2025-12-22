@@ -1,15 +1,15 @@
 If:
   PathExclude:
     - third_party/pigweed/pw_string/type_to_string.cc
-    - particle/backends/assert/assert_backend.cc
+    - particle/pw_assert_particle/assert_backend.cc
     - third_party/pigweed/pw_chrono/system_clock.cc
     - particle/third_party/device-os/modules/tron/user-part/src/module_info.c
     - particle/third_party/device-os/modules/tron/user-part/src/user_export.c
     - particle/third_party/device-os/modules/tron/user-part/src/user_module.c
     - particle/third_party/device-os/modules/tron/user-part/src/newlib_stubs.cpp
     - third_party/pigweed/pw_digital_io/digital_io.cc
-    - particle/backends/gpio/digital_io.cc
-    - particle/backends/thread/sleep.cc
+    - particle/pw_digital_io_particle/digital_io.cc
+    - particle/pw_thread_particle/sleep.cc
     - third_party/pigweed/pw_thread/sleep.cc
     - third_party/pigweed/pw_log_basic/log_basic.cc
     - third_party/pigweed/pw_string/string_builder.cc
@@ -22,8 +22,8 @@ If:
     - lib/gpio_mirror/gpio_mirror.cc
     - third_party/pigweed/pw_bytes/byte_builder.cc
     - firmware/particle_p2/main.cc
-    - particle/backends/sys_io/sys_io.cc
-    - particle/backends/chrono/system_clock.cc
+    - particle/pw_sys_io_particle/sys_io.cc
+    - particle/pw_chrono_particle/system_clock.cc
     - third_party/pigweed/pw_string/format.cc
     - third_party/pigweed/pw_status/status.cc
 Diagnostics:
