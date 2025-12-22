@@ -7,6 +7,7 @@
 #include <chrono>
 
 #include "lib/particle_gpio/particle_digital_io.h"
+#include "lib/particle_log/log_bridge.h"
 #include "pinmap_hal.h"
 #include "pw_chrono/system_clock.h"
 #include "pw_log/log.h"
@@ -31,7 +32,8 @@ extern "C" {
 
 // Called before C++ constructors run
 void module_user_init_hook() {
-  // Nothing to do here
+  // Initialize log bridge to capture Device OS system logs
+  particle_log::InitLogBridge();
 }
 
 void setup() {

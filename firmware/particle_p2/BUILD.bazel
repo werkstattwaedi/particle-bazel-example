@@ -13,6 +13,7 @@ cc_library(
     srcs = ["main.cc"],
     deps = [
         "//lib/particle_gpio",
+        "//lib/particle_log:log_bridge",
         "//third_party/particle:device_os_headers",
         "//third_party/particle:pw_assert_stub",  # pw_assert implementation stub
         "@pigweed//pw_chrono:system_clock",
