@@ -1,21 +1,22 @@
 # Particle P2 GPIO Mirror Firmware
 
-load("//third_party/particle/rules:particle_firmware.bzl",
+load("@particle_bazel//particle/rules:particle_firmware.bzl",
      "particle_cc_binary",
      "particle_firmware_binary",
      "particle_flash_binary")
 
 package(default_visibility = ["//visibility:public"])
 
-# LED blink firmware library
+# GPIO mirror firmware library
 cc_library(
     name = "gpio_mirror_firmware_lib",
     srcs = ["main.cc"],
     deps = [
-        "//lib/particle_gpio",
-        "//lib/particle_log:log_bridge",
-        "//third_party/particle:device_os_headers",
-        "//third_party/particle:pw_assert_stub",  # pw_assert implementation stub
+        "//lib/gpio_mirror",
+        "@particle_bazel//backends/gpio:particle_gpio",
+        "@particle_bazel//backends/log:log_bridge",
+        "@particle_bazel//particle:device_os_headers",
+        "@particle_bazel//particle:pw_assert_stub",
         "@pigweed//pw_chrono:system_clock",
         "@pigweed//pw_log",
         "@pigweed//pw_sync:mutex",

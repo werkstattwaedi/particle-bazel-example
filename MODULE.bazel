@@ -1,26 +1,19 @@
 module(name = "particle_p2_firmware")
 
-# Pigweed - via local submodule
+# Particle Bazel - infrastructure for Particle firmware with Pigweed
+bazel_dep(name = "particle_bazel")
+local_path_override(
+    module_name = "particle_bazel",
+    path = "particle",
+)
+
+# Pigweed - via local submodule (shared with particle_bazel)
 bazel_dep(name = "pigweed")
 local_path_override(
     module_name = "pigweed",
     path = "third_party/pigweed",
 )
 
-# Standard dependencies
+# Standard dependencies (shared with particle_bazel)
 bazel_dep(name = "platforms", version = "0.0.10")
 bazel_dep(name = "rules_cc", version = "0.1.1")
-
-# Use ARM GCC 10.2.1 toolchain (matching Particle's toolchain version)
-arm_toolchain = use_extension("//toolchain:extensions.bzl", "arm_toolchain")
-use_repo(arm_toolchain, "gcc_arm_none_eabi_toolchain")
-
-# Register Pigweed's ARM GCC toolchain for Cortex-M33
-register_toolchains(
-    "@pigweed//pw_toolchain/arm_gcc:arm_gcc_cc_toolchain_cortex-m33",
-)
-
-# Register host toolchain for tests
-register_toolchains(
-    "@pigweed//pw_toolchain/host_clang:host_cc_toolchain_linux",
-)

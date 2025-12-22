@@ -4,3 +4,6 @@
 [submodule "third_party/particle/device-os"]
 	path = third_party/particle/device-os
 	url = https://github.com/particle-iot/device-os.git
+[submodule "particle"]
+	path = particle
+	url = https://github.com/werkstattwaedi/particle-bazel.git
