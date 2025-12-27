@@ -1,50 +1,31 @@
 # Particle P2 GPIO Mirror Firmware
 
 load("@particle_bazel//rules:particle_firmware.bzl",
-     "particle_cc_binary",
-     "particle_firmware_binary",
+     "particle_firmware",
      "particle_flash_binary")
 
 package(default_visibility = ["//visibility:public"])
 
-# GPIO mirror firmware library
-cc_library(
-    name = "gpio_mirror_firmware_lib",
+# GPIO mirror firmware with CRC for OTA
+# Outputs: gpio_mirror_firmware.bin (flashable) and gpio_mirror_firmware.elf
+particle_firmware(
+    name = "gpio_mirror_firmware",
     srcs = ["main.cc"],
     deps = [
         "//lib/gpio_mirror",
         "@particle_bazel//pw_digital_io_particle:digital_io",
         "@particle_bazel//pb_log:log_bridge",
         "@particle_bazel//:device_os_headers",
-        "@particle_bazel//pw_assert_particle:assert_backend",
         "@pigweed//pw_chrono:system_clock",
         "@pigweed//pw_log",
         "@pigweed//pw_sync:mutex",
         "@pigweed//pw_thread:sleep",
     ],
-    target_compatible_with = ["@pigweed//pw_build/constraints/arm:cortex-m33"],
-)
-
-# GPIO mirror firmware binary (ELF)
-particle_cc_binary(
-    name = "gpio_mirror_firmware.elf",
-    deps = [":gpio_mirror_firmware_lib"],
-)
-
-# Flashable binary with SHA256/CRC32 patched
-particle_firmware_binary(
-    name = "gpio_mirror_firmware",
-    elf = ":gpio_mirror_firmware.elf",
+    platform = "@particle_bazel//platforms/p2:particle_p2",
 )
 
 # Flash target
 particle_flash_binary(
     name = "flash",
-    firmware = ":gpio_mirror_firmware.bin",
-)
-
-# Flash ELF directly (for debugging - may fail CRC check)
-particle_flash_binary(
-    name = "flash_elf",
-    firmware = ":gpio_mirror_firmware.elf",
+    firmware = ":gpio_mirror_firmware",
 )

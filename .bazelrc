@@ -2,7 +2,7 @@
 # ===========================================
 
 # Import Particle Bazel common configuration
-import %workspace%/particle/.bazelrc
+import %workspace%/../particle-bazel/.bazelrc
 
 # ============================================
 # Application-specific overrides (if any)

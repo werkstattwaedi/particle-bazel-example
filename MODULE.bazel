@@ -4,14 +4,14 @@ module(name = "particle_p2_firmware")
 bazel_dep(name = "particle_bazel")
 local_path_override(
     module_name = "particle_bazel",
-    path = "particle",
+    path = "../particle-bazel",
 )
 
-# Pigweed - via local submodule (shared with particle_bazel)
+# Pigweed - shared with sense project
 bazel_dep(name = "pigweed")
 local_path_override(
     module_name = "pigweed",
-    path = "third_party/pigweed",
+    path = "../pigweed",
 )
 
 # Standard dependencies (shared with particle_bazel)

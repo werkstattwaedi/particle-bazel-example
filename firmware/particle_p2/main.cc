@@ -41,16 +41,10 @@ int64_t g_last_log_time_ms = 0;
 int64_t g_last_blink_time_ms = 0;
 bool g_led_state = false;
 
-// Particle user module entry points
-extern "C" {
-
-// Called before C++ constructors run
-void module_user_init_hook() {
+int main() {
   // Initialize log bridge to capture Device OS system logs
   pb::log::InitLogBridge();
-}
 
-void setup() {
   PW_LOG_INFO("GPIO Mirror starting up");
 
   // Initialize LED
@@ -71,49 +65,45 @@ void setup() {
   auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
       now.time_since_epoch());
   PW_LOG_INFO("System clock at startup: %lld ms", static_cast<long long>(ms.count()));
-}
 
-void loop() {
-  // Update GPIO mirror (D0 -> D1)
-  // (void)mirror.Update();
+  // Main loop - runs forever
+  while (true) {
+    // Update GPIO mirror (D0 -> D1)
+    // (void)mirror.Update();
 
-  // Update loop count with mutex protection
-  // g_state_mutex.lock();
-  g_loop_count++;
-  // g_state_mutex.unlock();
+    // Update loop count with mutex protection
+    // g_state_mutex.lock();
+    g_loop_count++;
+    // g_state_mutex.unlock();
 
-  // Get current time using pw::chrono
-  auto now = pw::chrono::SystemClock::now();
-  auto now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-      now.time_since_epoch()).count();
+    // Get current time using pw::chrono
+    now = pw::chrono::SystemClock::now();
+    auto now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+        now.time_since_epoch()).count();
 
-  // Toggle LED based on time (every 500ms)
-  if (now_ms - g_last_blink_time_ms >= 500) {
-    g_led_state = !g_led_state;
-    (void)led.SetState(g_led_state ? pw::digital_io::State::kActive
-                                   : pw::digital_io::State::kInactive);
-    g_last_blink_time_ms = now_ms;
+    // Toggle LED based on time (every 500ms)
+    if (now_ms - g_last_blink_time_ms >= 500) {
+      g_led_state = !g_led_state;
+      (void)led.SetState(g_led_state ? pw::digital_io::State::kActive
+                                     : pw::digital_io::State::kInactive);
+      g_last_blink_time_ms = now_ms;
+    }
+
+    // Log every 5 seconds
+    if (now_ms - g_last_log_time_ms >= 5000) {
+      uint32_t count = g_loop_count;
+
+      PW_LOG_INFO("Status: time=%lld ms, loops=%lu (%lu/sec), led=%s",
+                  static_cast<long long>(now_ms),
+                  static_cast<unsigned long>(count),
+                  static_cast<unsigned long>(count / (now_ms / 1000)),
+                  g_led_state ? "ON" : "OFF");
+
+      g_last_log_time_ms = now_ms;
+    }
+
+    // No sleep - run as fast as possible
   }
 
-  // Log every 5 seconds
-  if (now_ms - g_last_log_time_ms >= 5000) {
-    uint32_t count = g_loop_count;
-
-    PW_LOG_INFO("Statusx: time=%lld ms, loops=%lu (%lu/sec), led=%s",
-                static_cast<long long>(now_ms),
-                static_cast<unsigned long>(count),
-                static_cast<unsigned long>(count / (now_ms / 1000)),
-                g_led_state ? "ON" : "OFF");
-
-    g_last_log_time_ms = now_ms;
-  }
-
-  // No sleep - run as fast as possible
+  return 0;  // Never reached
 }
-
-// Called after each loop iteration
-void _post_loop() {
-  // Nothing to do here
-}
-
-}  // extern "C"
